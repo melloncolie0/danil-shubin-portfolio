@@ -43,7 +43,6 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offse
 .website-grid .website-canvas{height:auto;aspect-ratio:16/9;background:#101010;border-radius:4px;transform-style:preserve-3d;box-shadow:0 0 0 1px #ffffff10}
 .website-grid .website-arrangement{width:100%;height:100%}
 .website-shot{width:100%;height:100%;object-fit:cover}
-.website-grid .website-action{left:22px;bottom:22px;gap:18px;padding:12px 18px;font-size:11px}
 .website-grid .work-caption{align-items:flex-start;margin-top:19px}
 .website-grid .work-caption h3{font-size:clamp(17px,1.55vw,24px);line-height:1.3;letter-spacing:-.04em}
 .website-grid .work-caption p{line-height:1.6}
@@ -56,9 +55,6 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offse
 .website-mobile img{width:100%}
 .website-work:hover .website-desktop{transform:rotate(-1deg) scale(1.025)}
 .website-work:hover .website-mobile{transform:rotate(3deg) translateY(-9px)}
-.website-action{position:absolute;left:6%;bottom:7%;display:flex;align-items:center;gap:26px;background:var(--white);color:#0b0e13;border-radius:40px;font-size:13px;padding:14px 20px;transform:translateY(10px);opacity:0;transition:opacity .25s,transform .4s var(--spring)}
-.website-action span{font-size:20px;line-height:1}
-.website-work:hover .website-action,.website-work:focus-visible .website-action{opacity:1;transform:translateY(0)}
 .work-caption{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:23px}
 .work-caption h3{font-size:24px;letter-spacing:-.045em;font-weight:500;margin:0 0 5px}
 .work-caption p{font-size:13px;color:var(--muted);margin:0}
@@ -144,7 +140,6 @@ body.modal-open{overflow:hidden}
 .website-grid{grid-template-columns:1fr;gap:40px}
 .website-grid .work-caption{flex-direction:row;gap:20px}
 .website-grid .work-caption h3{font-size:20px}
-.website-grid .website-action{left:14px;bottom:14px;font-size:10px;padding:10px 14px}
 .project-intro h1[data-project-name]{font-size:clamp(31px,7.6vw,58px);overflow-wrap:anywhere}
 .project-demo-link .pill{font-size:12px;gap:16px;padding-inline:17px}
 .identity{font-size:12px;letter-spacing:.08em}
@@ -158,7 +153,6 @@ body.modal-open{overflow:hidden}
 .website-canvas{height:340px}
 .website-desktop{width:80%;margin-right:9%}
 .website-mobile{width:22%;right:5%;bottom:12%;border-width:3px;border-radius:14px}
-.website-action{opacity:1;transform:none;bottom:5%;left:5%;font-size:11px;padding:10px 15px;gap:18px}
 .work-caption{margin-top:18px}
 .work-caption h3{font-size:20px}
 .work-caption p{font-size:11px}
