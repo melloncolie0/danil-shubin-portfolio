@@ -6,6 +6,8 @@
 .hero h1{font-family:var(--display);font-size:clamp(48px,9vw,146px);font-weight:800;line-height:1.06;letter-spacing:-.025em;margin:0}
 .headline-mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
 .headline-line{display:block;width:max-content;max-width:100%;white-space:nowrap;will-change:transform}
+html[data-hero-entry="pending"] .headline-line{opacity:0;transform:translate3d(0,18px,0)}
+html[data-hero-entry="pending"] .skill-row{opacity:0;transform:translate3d(0,8px,0)}
 .designer-line{font-weight:400;letter-spacing:-.05em;line-height:1.05}
 .hero-skills{margin-top:24px;font-size:clamp(18px,1.75vw,29px);line-height:1.55;font-weight:400;letter-spacing:-.035em}
 .skill-row{list-style:none;display:flex;flex-wrap:wrap;align-items:baseline;column-gap:1.1em;row-gap:3px;padding:0;margin:0 0 5px;font-size:1em;--skill-opacity:.96}

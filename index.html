@@ -6,16 +6,23 @@
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Danil Shubin, Full stack дизайнер. Карточки товаров для маркетплейсов.">
   <title>Danil Shubin | Full stack дизайнер</title>
+  <script>
+    // Prepare the entrance before the first paint; failed scripts must not hide the title.
+    try {
+      if (sessionStorage.getItem('portfolio-motion-v2') !== 'off') document.documentElement.dataset.heroEntry = 'pending';
+    } catch { document.documentElement.dataset.heroEntry = 'pending'; }
+    setTimeout(() => document.documentElement.removeAttribute('data-hero-entry'), 4000);
+  </script>
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png?v=2" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="vendor/display-fonts.css">
-  <link rel="stylesheet" href="styles.css?v=2">
-  <link rel="stylesheet" href="hero.css?v=2">
-  <link rel="stylesheet" href="orbit.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=3">
+  <link rel="stylesheet" href="hero.css?v=3">
+  <link rel="stylesheet" href="orbit.css?v=3">
   <link rel="stylesheet" href="head.css">
   <script src="vendor/motion.js" defer></script>
-  <script src="app.js?v=2" defer></script>
+  <script src="app.js?v=3" defer></script>
   <script src="orbit.js?v=2" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
   <script src="portrait-model.js?v=2" type="module"></script>
@@ -94,7 +101,7 @@
   </main>
   <footer class="footer shell">
     <a class="footer-sign" href="#hero-title" aria-label="Danil Shubin, наверх"><img class="footer-logo" src="media/ds-logo.png" alt="Danil Shubin" width="242" height="106"></a>
-    <a class="footer-telegram" href="https://t.me/melloncolie2" target="_blank" rel="noopener noreferrer" aria-label="Telegram @melloncolie2" title="Telegram @melloncolie2"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.67 3.73c.47-.2.9.12.75.85l-3.03 14.29c-.11.54-.43.67-.87.42l-4.62-3.41-2.23 2.15c-.25.25-.46.46-.94.46l.33-4.7 8.57-7.74c.37-.33-.08-.52-.57-.2L7.47 12.52l-4.55-1.43c-.53-.16-.54-.53.11-.78Z"/></svg></a>
+    <a class="footer-telegram" href="https://t.me/melloncolie2" target="_blank" rel="noopener noreferrer" aria-label="Telegram @melloncolie2" title="Telegram @melloncolie2"><svg viewBox="187 187 826 826" width="44" height="44" aria-hidden="true" focusable="false"><circle cx="600" cy="600" r="413" fill="#000"/><path fill="#fff" transform="translate(32 -21)" d="M773 438C787 440 792 452 790 470L745 764C741 796 724 813 699 802L555 708C538 697 535 682 546 668L677 542C684 535 681 523 671 529L489 650C471 662 449 662 433 658L360 635C344 631 342 611 356 603L746 441C756 438 765 436 773 438Z"/></svg></a>
     <a href="#hero-title" class="back-top">Наверх</a>
   </footer>
 

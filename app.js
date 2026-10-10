@@ -113,11 +113,19 @@ if (document.querySelector('.project-intro')) animateElement(document.querySelec
 
 function initHeroMotion() {
   const sequence = document.querySelector('.hero-sequence');
-  if (!sequence || !library) return;
+  const root = document.documentElement;
+  if (!sequence || !library) { root.removeAttribute('data-hero-entry'); return; }
   const composition = sequence.querySelector('.hero-composition');
-  const skills = sequence.querySelector('.hero-skills');
+  const lines = [...sequence.querySelectorAll('.headline-line')];
+  const rows = [...sequence.querySelectorAll('.skill-row')];
+  const entranceElements = [...lines, ...rows];
   let stopScroll = null;
   let entrances = [];
+  let entrancePending = root.dataset.heroEntry === 'pending';
+
+  function clearEntrance() {
+    entranceElements.forEach((element) => { element.style.transform = ''; element.style.opacity = ''; });
+  }
 
   function renderScroll(progress) {
     const value = isMotionReduced() ? 0 : progress;
@@ -131,9 +139,11 @@ function initHeroMotion() {
     entrances.forEach((animation) => animation?.stop());
     entrances = [];
     renderScroll(0);
-    sequence.querySelectorAll('.headline-line').forEach((line) => { line.style.transform = ''; line.style.opacity = ''; });
-    skills.style.transform = '';
-    skills.style.opacity = '';
+    if (!entrancePending || isMotionReduced()) {
+      entrancePending = false;
+      root.removeAttribute('data-hero-entry');
+      clearEntrance();
+    }
     if (isMotionReduced()) return;
     if (desktopScroll.matches) stopScroll = library.scroll(renderScroll, { target: sequence, offset: ['start start', 'end start'] });
   }
@@ -143,11 +153,20 @@ function initHeroMotion() {
 
   // Wait for the real font before revealing the composition.
   document.fonts.ready.then(() => {
-    if (isMotionReduced()) return;
-    sequence.querySelectorAll('.headline-line').forEach((line, index) => {
-      entrances.push(animateElement(line, { y: ['110%', '0%'], opacity: [0, 1] }, { duration: 1.05, delay: index * 0.12 }));
+    if (!entrancePending || isMotionReduced() || root.dataset.heroEntry !== 'pending') {
+      root.removeAttribute('data-hero-entry');
+      clearEntrance();
+      return;
+    }
+    entrancePending = false;
+    lines.forEach((line, index) => {
+      entrances.push(animateElement(line, { y: [18, 0], opacity: [0, 1] }, { duration: 1.15, delay: 0.06 + index * 0.16, ease: [0.16, 1, 0.3, 1] }));
     });
-    entrances.push(animateElement(skills, { opacity: [0, 1], y: [12, 0] }, { duration: 0.65, delay: 0.3 }));
+    rows.forEach((row, index) => {
+      entrances.push(animateElement(row, { opacity: [0, 1], y: [8, 0] }, { duration: 0.85, delay: 0.38 + index * 0.065 }));
+    });
+    root.removeAttribute('data-hero-entry');
+    Promise.all(entrances.filter(Boolean)).then(clearEntrance);
   });
   sequence.querySelectorAll('.hero-skill').forEach(attachSkillMotion);
 }

@@ -5,7 +5,7 @@
 .orbit-icon:is(:hover,:focus-visible),.orbit-icon[data-orbit-state="drag"]{z-index:20}
 .orbit-icon:is(:hover,:focus-visible) img,.orbit-icon[data-orbit-state="drag"] img{filter:brightness(1.15) drop-shadow(0 0 9px color-mix(in srgb,var(--orbit-glow) 35%,transparent))}
 .orbit-icon[data-orbit-state="drag"]{cursor:grabbing}
-.orbit-icon:focus-visible{outline:1px solid #ffffffb0}
+.orbit-icon,.orbit-icon:focus-visible{outline:none}
 .orbit-label{position:absolute;left:50%;bottom:calc(100% + 5px);transform:translateX(-50%);font-size:9px;letter-spacing:0;white-space:nowrap;color:#e9e9e9;opacity:0;pointer-events:none;transition:opacity .2s}
 .orbit-icon:is(:hover,:focus-visible) .orbit-label,.orbit-icon[data-orbit-state="drag"] .orbit-label{opacity:1}
 .orbit-help{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip-path:inset(50%);white-space:nowrap;border:0}
@@ -31,4 +31,5 @@ html[data-motion="off"] .orbit-icon{will-change:auto}
 }
 @media(prefers-reduced-motion:reduce){html:not([data-motion="on"]) .orbit-icon{will-change:auto}.orbit-label,.orbit-icon img{transition:none}}
 @media(hover:none),(pointer:coarse){.orbit-icon img,.orbit-icon:is(:hover,:focus-visible) img{filter:none}.orbit-icon img{transition:none}}
+.orbit-icon:focus-visible img{filter:brightness(1.15) drop-shadow(0 0 9px color-mix(in srgb,var(--orbit-glow) 35%,transparent))}
 @media(max-width:900px){.hero-sequence{height:auto;min-height:0}.hero{position:relative}.hero-composition,.skill-face{will-change:auto}}

@@ -92,9 +92,9 @@ button:focus-visible,a:focus-visible{outline:3px solid var(--blue);outline-offse
 .footer{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:24px;margin-top:110px;padding-top:28px;padding-bottom:38px;border-top:1px solid var(--line)}
 .footer-sign{justify-self:start;display:inline-flex;align-items:center;min-height:44px}
 .footer-logo{width:94px;height:auto;transition:filter .3s ease,transform .4s var(--spring)}
-.footer-telegram{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:var(--ink);color:#000;transition:box-shadow .3s ease,background .3s ease}
-.footer-telegram:hover{background:#fff;box-shadow:0 0 22px #ffffff30}
-.footer-telegram svg{display:block;width:22px;height:22px;transform:translate(0,.42px)}
+.footer-telegram{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:#000;color:#fff;transition:box-shadow .3s ease}
+.footer-telegram:hover{box-shadow:0 0 22px #ffffff30}
+.footer-telegram svg{display:block;width:100%;height:100%}
 .back-top{justify-self:end;margin-right:max(0px,calc(200px - var(--gutter)));font-size:12px;color:var(--muted);padding-block:12px}
 .lightbox{border:0;background:#151a22;color:var(--ink);max-width:none;width:min(960px,calc(100vw - 40px));padding:0;border-radius:14px;max-height:calc(100dvh - 36px);overflow:auto;box-shadow:0 30px 100px #0004;overscroll-behavior:contain}
 .lightbox::backdrop{background:#10131bcc;backdrop-filter:blur(8px)}
