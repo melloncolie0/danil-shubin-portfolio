@@ -50,30 +50,18 @@
   function measureArea() {
     const rect = hero.getBoundingClientRect();
     // Orbit coordinates belong to the hero, even when it scrolls out of view.
-    const bounds = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
     const visibleHeight = Math.min(innerHeight, rect.bottom) - Math.max(0, rect.top);
     const opacity = Number(composition.style.opacity || 1);
-    return { rect, bounds, opacity,
+    return { rect, opacity,
       active: visibleHeight > 0 && opacity > .02 };
   }
 
-  function keepInside(x, y, area, radius) {
-    const limits = { left: area.bounds.left + radius, right: area.bounds.right - radius,
-      top: area.bounds.top + radius + 16, bottom: area.bounds.bottom - radius };
-    if (!area.active || limits.left > limits.right || limits.top > limits.bottom) return { x, y, fits: false };
-    const cx = Math.max(limits.left, Math.min(limits.right, x));
-    const cy = Math.max(limits.top, Math.min(limits.bottom, y));
-    return { x: cx, y: cy, fits: true };
-  }
-
-  function safeTarget(item, position, rect, area) {
-    const raw = world(position, rect);
-    const base = item.state === 'orbit' ? item.baseSize : item.size / item.zoom;
-    return { ...keepInside(raw.x, raw.y, area, base * raw.zoom * 1.25 * .65 + 10), zoom: raw.zoom };
+  function orbitTarget(position, rect, area) {
+    return { ...world(position, rect), fits: area.active };
   }
 
   function paintOrbit(item, position, rect = stage.getBoundingClientRect(), area = measureArea()) {
-    const target = safeTarget(item, position, rect, area);
+    const target = orbitTarget(position, rect, area);
     item.node.hidden = !target.fits;
     const size = item.baseSize;
     const x = (target.x - rect.left) / target.zoom, y = (target.y - rect.top) / target.zoom;
@@ -117,7 +105,7 @@
     delete item.node.dataset.returnSeconds;
   }
 
-  function driftBack(item, target, dt, elapsed, area) {
+  function driftBack(item, target, dt, elapsed) {
     const previous = item.previousTarget || target;
     const targetVX = dt > 0 ? Math.max(-400, Math.min(400, (target.x - previous.x) / dt)) : 0;
     const targetVY = dt > 0 ? Math.max(-400, Math.min(400, (target.y - previous.y) / dt)) : 0;
@@ -133,14 +121,9 @@
       item.vx += ((target.x - x) * attraction - (item.vx - targetVX) * friction) * step;
       item.vy += ((target.y - y) * attraction - (item.vy - targetVY) * friction) * step;
       x += item.vx * step; y += item.vy * step;
-      const safe = keepInside(x, y, area, item.size * Math.max(1.25, item.scale.get()) * .65 + 10);
-      if (!safe.fits) return { fits: false };
-      if (safe.x !== x && (safe.x - x) * item.vx < 0) item.vx *= -.12;
-      if (safe.y !== y && (safe.y - y) * item.vy < 0) item.vy *= -.12;
-      x = safe.x; y = safe.y;
     }
     item.x.jump(x); item.y.jump(y);
-    return { fits: true, distance: Math.hypot(x - target.x, y - target.y), speed: Math.hypot(item.vx - targetVX, item.vy - targetVY) };
+    return { distance: Math.hypot(x - target.x, y - target.y), speed: Math.hypot(item.vx - targetVX, item.vy - targetVY) };
   }
 
   function draw(time) {
@@ -162,11 +145,10 @@
       if (item.state === 'orbit') paintOrbit(item, position, rect, area);
       else {
         if (item.state === 'return') {
-          const target = safeTarget(item, position, rect, area);
+          const target = orbitTarget(position, rect, area);
           if (!target.fits) { restore(item); return; }
           const elapsed = time - item.released;
-          const flight = driftBack(item, target, dt, elapsed, area);
-          if (!flight.fits) { restore(item); return; }
+          const flight = driftBack(item, target, dt, elapsed);
           const proximity = Math.max(0, Math.min(1, 1 - flight.distance / item.releaseDistance));
           item.scale.set(1.18 + (position.scale * target.zoom / item.zoom - 1.18) * proximity);
           item.opacity.set(1 + (position.opacity - 1) * proximity);
@@ -175,11 +157,6 @@
             restore(item);
             return;
           }
-        }
-        if (item.state === 'drag') {
-          const safe = keepInside(item.x.get(), item.y.get(), area, item.size * Math.max(1.25, item.scale.get()) * .65 + 10);
-          if (!safe.fits) { restore(item); return; }
-          item.x.jump(safe.x); item.y.jump(safe.y);
         }
         paintHeld(item, area);
       }
@@ -229,19 +206,16 @@
   }
 
   function move(item, x, y) {
-    const safe = keepInside(x, y, measureArea(), item.size * Math.max(1.25, item.scale.get()) * .65 + 10);
-    if (!safe.fits) { restore(item); return; }
-    const nextX = safe.x, nextY = safe.y;
     if (item.pointer !== null) {
       const now = performance.now();
       const dt = Math.max(.008, (now - item.movedAt) / 1000);
       const blend = 1 - Math.exp(-dt / .055);
-      item.vx += ((nextX - item.x.get()) / dt - item.vx) * blend;
-      item.vy += ((nextY - item.y.get()) / dt - item.vy) * blend;
+      item.vx += ((x - item.x.get()) / dt - item.vx) * blend;
+      item.vy += ((y - item.y.get()) / dt - item.vy) * blend;
       item.movedAt = now;
     }
-    item.x.jump(nextX);
-    item.y.jump(nextY);
+    item.x.jump(x);
+    item.y.jump(y);
     paintHeld(item);
   }
 
@@ -255,7 +229,7 @@
     item.vx *= momentum; item.vy *= momentum;
     const speed = Math.hypot(item.vx, item.vy);
     if (speed > 280) { item.vx *= 280 / speed; item.vy *= 280 / speed; }
-    const target = safeTarget(item, orbit(item), stage.getBoundingClientRect(), measureArea());
+    const target = orbitTarget(orbit(item), stage.getBoundingClientRect(), measureArea());
     item.releaseDistance = Math.max(40, Math.hypot(item.x.get() - target.x, item.y.get() - target.y));
     item.previousTarget = null;
     const pointer = item.pointer;

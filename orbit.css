@@ -18,12 +18,11 @@ html[data-motion="off"] .orbit-icon{will-change:auto}
 @media(max-width:900px){
   .orbit-stage{position:relative;right:auto;top:auto;width:min(100%,370px);height:210px;margin-top:18px;margin-left:auto;margin-right:5%;--orbit-size:83px}
   .hero-sequence{height:calc(max(100svh,760px) + 120px);min-height:0}
-  .hero{height:max(100svh,760px);min-height:0}
-  .hero-inner{padding-top:120px;padding-bottom:65px;justify-content:center}
+  .hero{height:auto;min-height:100svh;min-height:100dvh}
+  .hero-inner{height:auto;min-height:100svh;min-height:100dvh;padding-top:120px;padding-bottom:65px;justify-content:center}
 }
 @media(max-width:760px){
-  .hero{height:auto;min-height:0}
-  .hero-inner{height:auto;padding-top:126px;padding-bottom:58px;justify-content:flex-start}
+  .hero-inner{padding-top:126px;padding-bottom:58px}
   .orbit-stage{width:min(100%,390px);height:260px;margin:24px auto 0;--orbit-size:96px}
 }
 @media(max-width:420px){.orbit-stage{height:250px;--orbit-size:90px;margin-top:22px}.hero-inner{padding-top:126px;padding-bottom:48px}}
