@@ -1,0 +1,40 @@
+.portrait-assistant{position:fixed;right:max(22px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:18;display:flex;flex-direction:column;align-items:flex-end;gap:4px;pointer-events:none}
+.portrait-assistant[hidden],.assistant-bubble[hidden],.assistant-choices[hidden]{display:none}
+.assistant-avatar{position:relative;width:166px;height:208px;padding:0;border:0;background:transparent;cursor:pointer;pointer-events:auto;outline-offset:3px}
+.assistant-avatar:focus-visible{outline:1px solid #fff}
+.assistant-avatar canvas,.assistant-avatar img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.assistant-avatar canvas{opacity:0}
+.assistant-avatar canvas[data-ready="true"]{opacity:1}
+.assistant-avatar:has(canvas[data-ready="true"]) img{visibility:hidden}
+.assistant-bubble{position:relative;width:min(302px,calc(100vw - 32px));padding:24px 20px 18px;border:1px solid #575757;background:#000;color:#eee;pointer-events:auto;box-shadow:0 8px 26px #0009;text-align:left}
+.assistant-bubble::after{content:"";position:absolute;bottom:-7px;right:78px;width:12px;height:12px;border-right:1px solid #575757;border-bottom:1px solid #575757;background:#000;transform:rotate(45deg)}
+.assistant-close{position:absolute;top:3px;right:3px;padding:2px;width:26px;height:26px;border:0;background:transparent;color:#999;font-family:inherit;font-size:20px;cursor:pointer}
+.assistant-close:hover,.assistant-close:focus-visible{color:#fff}
+.assistant-text{min-height:60px;margin:0;font-size:12px;line-height:1.7;font-family:inherit}
+.portrait-assistant[data-typing="true"] .assistant-text::after{content:"▏";color:#999}
+.assistant-choices{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.assistant-choices button{border:1px solid #444;padding:7px 9px;background:#000;color:#ddd;cursor:pointer;font:inherit;font-size:10px;line-height:1.3}
+.assistant-choices button:hover,.assistant-choices button:focus-visible{border-color:#eee;color:#fff}
+.assistant-live{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.lightbox:has(.lightbox-assistant-slot){width:min(1180px,calc(100vw - 40px));background:#090909;border:1px solid #333}
+.lightbox-content{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:24px;align-items:end}
+.lightbox-assistant-slot{min-width:0;align-self:stretch;display:flex;align-items:flex-end}
+.lightbox-assistant-slot .portrait-assistant{position:relative;inset:auto;width:100%;z-index:auto}
+.lightbox-assistant-slot .assistant-bubble{width:100%;box-shadow:none}
+.lightbox-assistant-slot .assistant-avatar{width:146px;height:182px}
+.lightbox-assistant-slot .assistant-text{min-height:0}
+@media(max-width:900px){.lightbox:has(.lightbox-assistant-slot){width:calc(100vw - 20px)}.lightbox-content{grid-template-columns:1fr;gap:18px}.lightbox-content .lightbox-image-area{height:58dvh}.lightbox-assistant-slot .portrait-assistant{display:grid;grid-template-columns:82px minmax(0,1fr);gap:12px;align-items:center}.lightbox-assistant-slot .assistant-avatar{width:82px;height:104px;grid-column:1;grid-row:1}.lightbox-assistant-slot .assistant-bubble{grid-column:2;grid-row:1;padding:22px 14px 14px}.lightbox-assistant-slot .assistant-bubble::after{left:-7px;right:auto;bottom:36px;transform:rotate(135deg)}.lightbox-assistant-slot .assistant-text{font-size:10px;line-height:1.8}}
+@media(max-width:380px){.lightbox-assistant-slot .portrait-assistant{grid-template-columns:58px minmax(0,1fr);gap:8px}.lightbox-assistant-slot .assistant-avatar{width:58px;height:78px}.lightbox-assistant-slot .assistant-bubble{padding:22px 10px 12px}.lightbox-assistant-slot .assistant-text{font-size:10px}}
+@media(max-width:760px){.portrait-assistant{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}.assistant-avatar{width:108px;height:134px}.assistant-bubble{width:min(278px,calc(100vw - 24px));padding:22px 16px 15px}.assistant-bubble::after{right:48px}.assistant-text{font-size:11px}}
+
+/* A separate large view for reviewing and exporting the actual mesh. */
+.head-preview-page{min-height:100dvh;background:#000;color:#eee;margin:0;font-family:Benzin,Arial,sans-serif}
+.head-preview-header{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:24px 5vw;font-size:12px}
+.head-preview-header a{color:inherit;text-decoration:none;border-bottom:1px solid #555;padding-bottom:4px}
+.head-preview-stage{position:relative;width:min(82vw,570px);height:min(78vw,630px);margin:0 auto}
+.head-preview-stage canvas{display:block;width:100%;height:100%;touch-action:none;cursor:grab}
+.head-preview-stage canvas:active{cursor:grabbing}
+.head-preview-controls{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:720px;padding:15px 24px;margin:auto}
+.head-preview-controls button,.head-preview-controls a{border:1px solid #555;color:#eee;background:#000;padding:12px 16px;font:inherit;font-size:12px;text-decoration:none;cursor:pointer}
+.head-preview-caption{max-width:550px;margin:16px auto 40px;padding:0 24px;text-align:center;font-size:12px;line-height:1.8;color:#aaa}
+.head-demo-text{min-height:54px;max-width:440px;margin:8px auto;text-align:center;padding:0 24px;font-size:13px;line-height:1.7}

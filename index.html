@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#000000">
+  <meta name="description" content="Danil Shubin, Full stack дизайнер. Карточки товаров для маркетплейсов.">
+  <title>Danil Shubin | Full stack дизайнер</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="vendor/display-fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="hero.css">
+  <link rel="stylesheet" href="orbit.css">
+  <link rel="stylesheet" href="head.css">
+  <script src="vendor/motion.js" defer></script>
+  <script src="app.js" defer></script>
+  <script src="orbit.js" defer></script>
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
+  <script src="portrait-model.js" type="module"></script>
+  <script src="assistant.js" defer></script>
+</head>
+<body class="portfolio-page">
+  <a class="skip-link" href="#main">К работам</a>
+  <header class="header shell">
+    <a class="identity" href="./" aria-label="DANIL SHUBIN, главная"><img class="identity-logo" src="media/ds-logo.png" alt="Danil Shubin" width="242" height="106"></a>
+    <nav aria-label="Основная навигация"><a href="#cards">Карточки</a></nav>
+    <button type="button" class="motion-toggle" aria-label="Включить анимацию" aria-pressed="false"><span class="motion-label">Анимация</span><span class="toggle-track" aria-hidden="true"><span></span></span></button>
+  </header>
+  <main id="main">
+    <section class="hero-sequence" aria-labelledby="hero-title">
+      <div class="hero">
+        <div class="hero-inner shell">
+          <div class="hero-composition">
+            <h1 id="hero-title" aria-label="Full stack дизайнер"><span class="headline-mask"><span class="headline-line">FULL STACK</span></span><span class="headline-mask"><span class="headline-line designer-line">дизайнер</span></span></h1>
+            <div class="hero-skills" role="group" aria-label="Навыки Full stack дизайнера">
+              <ul class="skill-row">
+                <li class="hero-skill" tabindex="0"><span class="skill-face">UX/UI</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">web design</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">инфографика</span></li>
+              </ul>
+              <ul class="skill-row">
+                <li class="hero-skill" tabindex="0"><span class="skill-face">Figma</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">прототипирование</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">дизайн-системы</span></li>
+              </ul>
+              <ul class="skill-row">
+                <li class="hero-skill" tabindex="0"><span class="skill-face">HTML/CSS</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">JavaScript</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">motion</span></li>
+              </ul>
+              <ul class="skill-row">
+                <li class="hero-skill" tabindex="0"><span class="skill-face">AI</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">usability</span></li>
+                <li class="hero-skill" tabindex="0"><span class="skill-face">vibecoding</span></li>
+              </ul>
+            </div>
+            <div class="orbit-stage" role="group" aria-label="Инструменты дизайнера" aria-describedby="orbit-help">
+              <button type="button" class="orbit-icon" data-orbit-icon="figma" aria-label="Переместить Figma" style="--orbit-glow:#ff777b"><img src="media/orbit/figma.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Figma</span></button>
+              <button type="button" class="orbit-icon" data-orbit-icon="framer" aria-label="Переместить Framer" style="--orbit-glow:#8180ff"><img src="media/orbit/framer.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Framer</span></button>
+              <button type="button" class="orbit-icon" data-orbit-icon="illustrator" aria-label="Переместить Illustrator" style="--orbit-glow:#ffa928"><img src="media/orbit/illustrator.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Illustrator</span></button>
+              <button type="button" class="orbit-icon" data-orbit-icon="photoshop" aria-label="Переместить Photoshop" style="--orbit-glow:#35bcff"><img src="media/orbit/photoshop.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Photoshop</span></button>
+              <button type="button" class="orbit-icon" data-orbit-icon="blender" aria-label="Переместить Blender" style="--orbit-glow:#ff9526"><img src="media/orbit/blender.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Blender</span></button>
+              <button type="button" class="orbit-icon" data-orbit-icon="after-effects" aria-label="Переместить After Effects" style="--orbit-glow:#a595ff"><img src="media/orbit/after-effects.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">After Effects</span></button>
+              <p class="orbit-hint" aria-hidden="true">Перетащи и отпусти</p>
+              <p class="orbit-help" id="orbit-help">Иконки можно перетаскивать в пределах первого экрана. С клавиатуры используйте стрелки. Enter или Escape возвращает иконку на орбиту.</p>
+              <p class="orbit-help orbit-status" role="status" aria-live="polite" aria-atomic="true"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="portfolio-content">
+    <section class="cards-section section shell" id="cards" aria-labelledby="cards-title">
+      <div class="section-heading"><h2 id="cards-title">Карточки<br>товаров</h2></div>
+      <div class="filter-bar" aria-label="Категории карточек">
+        <div class="filters" role="group" aria-label="Выбрать категорию">
+          <span class="filter-indicator" aria-hidden="true"></span>
+          <button type="button" class="filter active" data-category="Все" aria-pressed="true">Все</button>
+          <button type="button" class="filter" data-category="Для дома" aria-pressed="false">Для дома</button>
+          <button type="button" class="filter" data-category="Инструменты" aria-pressed="false">Инструменты</button>
+          <button type="button" class="filter" data-category="Косметика" aria-pressed="false">Косметика</button>
+          <button type="button" class="filter" data-category="Одежда" aria-pressed="false">Одежда</button>
+          <button type="button" class="filter" data-category="Электроника" aria-pressed="false">Электроника</button>
+        </div>
+        <p class="gallery-status" id="gallery-status" role="status" aria-live="polite">Выбранные работы</p>
+      </div>
+      <div class="card-grid" id="card-grid" aria-label="Галерея карточек"></div>
+      <div class="gallery-more"><button class="pill secondary tactile" id="show-all" type="button">Все работы</button></div>
+      <noscript><p>Для переключения категорий включите JavaScript. <a href="media/card-12-large.webp">Посмотреть одну из работ</a>.</p></noscript>
+    </section>
+    </div>
+  </main>
+  <footer class="footer shell">
+    <a class="footer-sign" href="#hero-title" aria-label="Danil Shubin, наверх"><img class="footer-logo" src="media/ds-logo.png" alt="Danil Shubin" width="242" height="106"></a>
+    <a class="footer-telegram" href="https://t.me/melloncolie2" target="_blank" rel="noopener noreferrer" aria-label="Telegram @melloncolie2" title="Telegram @melloncolie2"><svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" focusable="false"><path fill="currentColor" d="M20.67 3.73c.47-.2.9.12.75.85l-3.03 14.29c-.11.54-.43.67-.87.42l-4.62-3.41-2.23 2.15c-.25.25-.46.46-.94.46l.33-4.7 8.57-7.74c.37-.33-.08-.52-.57-.2L7.47 12.52l-4.55-1.43c-.53-.16-.54-.53.11-.78Z"/></svg></a>
+    <a href="#hero-title" class="back-top">Наверх</a>
+  </footer>
+
+  <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
+    <div class="lightbox-shell">
+      <div class="lightbox-top"><div><p id="lightbox-category"></p><h2 id="lightbox-title"></h2></div><button type="button" class="round-button close-lightbox" aria-label="Закрыть просмотр"><span aria-hidden="true">×</span></button></div>
+      <div class="lightbox-content">
+        <div class="lightbox-image-area"><img id="lightbox-image" src="media/card-12-large.webp" alt=""></div>
+        <div class="lightbox-assistant-slot"></div>
+      </div>
+      <div class="lightbox-bottom"><button type="button" class="pill secondary" id="previous-card">Предыдущая</button><span id="lightbox-count" aria-live="polite"></span><button type="button" class="pill secondary" id="next-card">Следующая</button></div>
+    </div>
+  </dialog>
+  <aside class="portrait-assistant" aria-label="Помощник по портфолио">
+    <div class="assistant-bubble" id="assistant-bubble" hidden>
+      <button type="button" class="assistant-close" aria-label="Закрыть подсказку">×</button>
+      <p class="assistant-text" aria-hidden="true"></p>
+      <p class="assistant-live" role="status" aria-live="polite" aria-atomic="true"></p>
+      <div class="assistant-choices" hidden><button type="button" data-assistant-topic="cards">Карточки</button><button type="button" data-assistant-topic="help">Как смотреть</button></div>
+    </div>
+    <button type="button" class="assistant-avatar" aria-label="Открыть помощника" aria-expanded="false" aria-controls="assistant-bubble"><img src="media/head/tripo-poster.jpg" alt="" aria-hidden="true"><canvas data-portrait aria-hidden="true"></canvas></button>
+  </aside>
+</body>
+</html>
