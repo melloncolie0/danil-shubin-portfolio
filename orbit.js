@@ -49,11 +49,12 @@
 
   function measureArea() {
     const rect = hero.getBoundingClientRect();
-    const bounds = { left: Math.max(0, rect.left), right: Math.min(innerWidth, rect.right),
-      top: Math.max(0, rect.top), bottom: Math.min(innerHeight, rect.bottom) };
+    // Orbit coordinates belong to the hero, even when it scrolls out of view.
+    const bounds = { left: rect.left, right: rect.right, top: rect.top, bottom: rect.bottom };
+    const visibleHeight = Math.min(innerHeight, rect.bottom) - Math.max(0, rect.top);
     const opacity = Number(composition.style.opacity || 1);
     return { rect, bounds, opacity,
-      active: bounds.bottom - bounds.top > 70 && opacity > .02 };
+      active: visibleHeight > 0 && opacity > .02 };
   }
 
   function keepInside(x, y, area, radius) {
@@ -311,7 +312,10 @@
     items.forEach(item => { item.baseSize = parseFloat(getComputedStyle(item.node).width) || item.baseSize; });
     requestDraw();
   }).observe(stage);
-  window.addEventListener('scroll', requestDraw, { passive: true });
+  window.addEventListener('scroll', () => {
+    items.filter(item => item.state !== 'orbit').forEach(restore);
+    requestDraw();
+  }, { passive: true });
   document.addEventListener('portfolio-card-open', () => items.filter(item => item.state !== 'orbit').forEach(restore));
   new IntersectionObserver(entries => {
     visible = entries[0].isIntersecting;
