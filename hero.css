@@ -21,6 +21,11 @@ html[data-hero-entry="pending"] .skill-row{opacity:0;transform:translate3d(0,8px
 .hero-skill:focus-visible{outline:1px solid #ffffff75;outline-offset:6px;border-radius:2px}
 .portfolio-content{position:relative;z-index:2;background:var(--paper);padding-bottom:1px}
 .portfolio-content .cards-section{padding-top:78px}
+.portfolio-content .websites-section{padding-top:78px}
+.websites-section+.cards-section{padding-top:120px}
+.website-grid .website-work:last-child{grid-column:1/-1;max-width:880px;width:100%;justify-self:center}
+.website-grid .website-shot{object-position:top center}
+@media(max-width:760px){.portfolio-content .websites-section{padding-top:55px}.websites-section+.cards-section{padding-top:85px}}
 .website-arrangement{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;transform-origin:50% 65%}
 .card-surface:after{content:'';position:absolute;inset:0;border-radius:inherit;pointer-events:none;background:radial-gradient(circle at var(--light-x,50%) var(--light-y,50%),#fff6,transparent 58%);mix-blend-mode:soft-light;opacity:0;transition:opacity .35s}
 .card-button:hover .card-surface:after{opacity:.65}

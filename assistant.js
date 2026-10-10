@@ -12,7 +12,7 @@
   const slot=dialog?.querySelector('.lightbox-assistant-slot');
   const home=host.parentElement;
   let timer=0, greetingTimer=0, token=0, currentText='', cardText='', dismissed=false, showChoices=true;
-  const greeting='Привет! Пока здесь только карточки товаров. Позже добавлю сайты и другие работы. Открывай любую карточку, расскажу про её оформление.';
+  const greeting='Привет! Пока в портфолио только сайты и карточки товаров. Другие работы добавлю позже. Сайты можно открыть целиком, а карточки рассмотреть крупнее.';
   canvas.addEventListener('portrait-ready',()=> {
     canvas.portrait.speaking=host.dataset.typing==='true' && !bubble.hidden;
   });
@@ -57,12 +57,15 @@
   });
   host.querySelectorAll('[data-assistant-topic]').forEach(button=>button.addEventListener('click',()=> {
     const topic=button.dataset.assistantTopic;
-    if(topic==='cards') {
+    if(topic==='websites') {
+      say('Нажми на превью, чтобы открыть сайт целиком в новой вкладке. Здесь есть ведущий мероприятий, дома, барбершоп, студия макияжа и магазин обуви.');
+      document.getElementById('websites')?.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth'});
+    } else if(topic==='cards') {
       say('Выбери категорию или открой любую карточку. Расскажу, что в ней можно рассмотреть.');
       const gallery=document.getElementById('cards');
       if(gallery) gallery.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth'});
       else location.href='./#cards';
-    } else say('Нажми на карточку, чтобы рассмотреть её крупнее. Листай кнопками или стрелками клавиатуры. Закрыть просмотр можно крестиком или Escape.');
+    } else say('Сайт открывается в новой вкладке по нажатию на превью. Карточки можно рассмотреть крупнее и листать кнопками или стрелками клавиатуры. Закрыть просмотр можно крестиком или Escape.');
   }));
   document.addEventListener('motion-preference-change',()=> {
     if(host.dataset.typing==='true') finish(currentText);
@@ -88,8 +91,8 @@
     if(canvas.portrait) { canvas.portrait.visible=true; canvas.portrait.resize(); }
   });
   const greet=()=>{if(!dismissed&&!document.hidden&&!host.hidden&&!cardText) say(greeting);};
-  // Let the hero stay clear. Introduce the gallery when it comes into view.
-  const gallery=document.getElementById('cards');
+  // Let the hero stay clear. Introduce the work when the first portfolio section appears.
+  const gallery=document.getElementById('websites') || document.getElementById('cards');
   if(document.querySelector('.orbit-stage')&&gallery) {
     const introduction=new IntersectionObserver(entries=> {
       if(entries[0].isIntersecting) { introduction.disconnect(); greetingTimer=setTimeout(greet,650); }
