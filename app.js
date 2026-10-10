@@ -104,11 +104,7 @@ if (library) {
 }
 
 initHeroMotion();
-// Keep old bookmarks useful after the websites section was removed.
-if (location.hash === '#websites' && document.getElementById('cards')) {
-  history.replaceState(null, '', '#cards');
-  requestAnimationFrame(() => document.getElementById('cards').scrollIntoView());
-}
+document.querySelectorAll('.website-work').forEach((work) => attachTilt(work, work.querySelector('.website-arrangement'), 2.5));
 if (document.querySelector('.project-intro')) animateElement(document.querySelector('.project-intro'), { opacity: [0, 1], y: [22, 0] }, { duration: 0.75 });
 
 function initHeroMotion() {
