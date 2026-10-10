@@ -1,0 +1,49 @@
+name: Publish portfolio
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'portfolio-upload.zip.*'
+      - portfolio-upload.sha256
+      - .github/workflows/deploy-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: portfolio-pages
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+      - name: Unpack public files
+        run: |
+          cat portfolio-upload.zip.[0-9][0-9][0-9] > portfolio-upload.zip
+          sha256sum -c portfolio-upload.sha256
+          unzip -q portfolio-upload.zip -d public
+          test -f public/index.html
+          test -f public/media/cards.json
+          test -f public/media/head/tripo-head.glb
+      - name: Configure Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: public
+      - name: Publish
+        id: deployment
+        uses: actions/deploy-pages@v4
