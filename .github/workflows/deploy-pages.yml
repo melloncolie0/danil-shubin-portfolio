@@ -37,7 +37,7 @@ jobs:
           unzip -q portfolio-upload.zip -d public
           test -f public/index.html
           test -f public/media/cards.json
-          test -f public/media/head/tripo-head.glb
+          test -f public/media/head/tripo-head-web.glb
       - name: Configure Pages
         uses: actions/configure-pages@v5
       - name: Upload site
