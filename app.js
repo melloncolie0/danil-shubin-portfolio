@@ -3,12 +3,13 @@
 const library = window.Motion;
 const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)');
+const desktopScroll = window.matchMedia('(min-width: 901px) and (hover: hover) and (pointer: fine)');
 const easing = [0.22, 1, 0.36, 1];
 const springOptions = { stiffness: 220, damping: 24, mass: 0.7 };
 const cleanupMotion = new Map();
-let motionPreference = null;
-try { motionPreference = sessionStorage.getItem('portfolio-motion'); } catch { /* Use the system preference if storage is unavailable. */ }
-function isMotionReduced() { return motionPreference ? motionPreference === 'off' : reducedMotion.matches; }
+let motionPreference = 'on';
+try { motionPreference = sessionStorage.getItem('portfolio-motion-v2') || 'on'; } catch { /* Motion starts enabled when storage is unavailable. */ }
+function isMotionReduced() { return motionPreference === 'off'; }
 function syncMotionPreference() {
   const enabled = !isMotionReduced();
   document.documentElement.dataset.motion = enabled ? 'on' : 'off';
@@ -20,7 +21,7 @@ function syncMotionPreference() {
 syncMotionPreference();
 document.querySelectorAll('.motion-toggle').forEach((button) => button.addEventListener('click', () => {
   motionPreference = isMotionReduced() ? 'on' : 'off';
-  try { sessionStorage.setItem('portfolio-motion', motionPreference); } catch { /* Preference still applies on this page. */ }
+  try { sessionStorage.setItem('portfolio-motion-v2', motionPreference); } catch { /* Preference still applies on this page. */ }
   syncMotionPreference();
   document.dispatchEvent(new Event('motion-preference-change'));
 }));
@@ -38,7 +39,7 @@ function animateElement(element, keyframes, options = {}) {
 }
 
 function attachTilt(target, surface, amount = 5) {
-  if (!library) return;
+  if (!library || !finePointer.matches) return;
   const rotateX = library.springValue(0, springOptions);
   const rotateY = library.springValue(0, springOptions);
   const scale = library.springValue(1, { stiffness: 280, damping: 24 });
@@ -134,10 +135,11 @@ function initHeroMotion() {
     skills.style.transform = '';
     skills.style.opacity = '';
     if (isMotionReduced()) return;
-    stopScroll = library.scroll(renderScroll, { target: sequence, offset: ['start start', 'end start'] });
+    if (desktopScroll.matches) stopScroll = library.scroll(renderScroll, { target: sequence, offset: ['start start', 'end start'] });
   }
   configureMotion();
   document.addEventListener('motion-preference-change', configureMotion);
+  desktopScroll.addEventListener('change', configureMotion);
 
   // Wait for the real font before revealing the composition.
   document.fonts.ready.then(() => {

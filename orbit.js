@@ -14,7 +14,7 @@
     node.dataset.orbitState = 'orbit';
     const marker = document.createComment(`orbit ${node.dataset.orbitIcon}`);
     node.before(marker);
-    return { node, index, marker, state: 'orbit', hovered: false, keyboard: false,
+    return { node, index, marker, baseSize: node.offsetWidth, state: 'orbit', hovered: false, keyboard: false,
       pointer: null, hover: library.springValue(0, { stiffness: 220, damping: 22 }),
       x: library.springValue(0, spring), y: library.springValue(0, spring),
       opacity: library.springValue(1, spring),
@@ -67,14 +67,14 @@
 
   function safeTarget(item, position, rect, area) {
     const raw = world(position, rect);
-    const base = item.state === 'orbit' ? (item.node.offsetWidth || parseFloat(getComputedStyle(item.node).width)) : item.size / item.zoom;
+    const base = item.state === 'orbit' ? item.baseSize : item.size / item.zoom;
     return { ...keepInside(raw.x, raw.y, area, base * raw.zoom * 1.25 * .65 + 10), zoom: raw.zoom };
   }
 
   function paintOrbit(item, position, rect = stage.getBoundingClientRect(), area = measureArea()) {
     const target = safeTarget(item, position, rect, area);
     item.node.hidden = !target.fits;
-    const size = item.node.offsetWidth || parseFloat(getComputedStyle(item.node).width);
+    const size = item.baseSize;
     const x = (target.x - rect.left) / target.zoom, y = (target.y - rect.top) / target.zoom;
     item.node.style.transform = `translate3d(${x - size / 2}px,${y - size / 2}px,0) rotate(${position.rotation}deg) scale(${position.scale})`;
     item.node.style.opacity = position.opacity;
@@ -151,7 +151,11 @@
     const area = measureArea();
     layer.hidden = !area.active;
     layer.style.opacity = area.opacity;
-    if (!area.active) items.filter(item => item.state !== 'orbit').forEach(restore);
+    if (!area.active) {
+      items.filter(item => item.state !== 'orbit').forEach(restore);
+      lastTime = 0;
+      return;
+    }
     items.forEach(item => {
       const position = orbit(item);
       if (item.state === 'orbit') paintOrbit(item, position, rect, area);
@@ -202,7 +206,7 @@
     const drawn = item.node.getBoundingClientRect();
     target.x = drawn.left + drawn.width / 2; target.y = drawn.top + drawn.height / 2;
     item.zoom = target.zoom;
-    item.size = item.node.offsetWidth * target.zoom;
+    item.size = item.baseSize * target.zoom;
     item.x.jump(target.x); item.y.jump(target.y);
     item.scale.jump(position.scale); item.rotate.jump(position.rotation);
     item.opacity.jump(position.opacity);
@@ -304,6 +308,7 @@
   new ResizeObserver(() => {
     width = stage.clientWidth; height = stage.clientHeight;
     items.filter(item => item.state !== 'orbit').forEach(restore);
+    items.forEach(item => { item.baseSize = parseFloat(getComputedStyle(item.node).width) || item.baseSize; });
     requestDraw();
   }).observe(stage);
   window.addEventListener('scroll', requestDraw, { passive: true });

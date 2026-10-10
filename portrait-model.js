@@ -2,13 +2,13 @@ import * as THREE from 'three';
 import { GLTFLoader } from './vendor/three/examples/jsm/loaders/GLTFLoader.js';
 import { MeshoptDecoder } from './vendor/three/examples/jsm/libs/meshopt_decoder.module.js';
 
-// Keep the supplied GLB intact. Facial motion is applied to each instance on the GPU.
-const modelURL = new URL('./media/head/tripo-head.glb', import.meta.url);
+// The web copy keeps the same face and coordinates; the supplied GLB stays intact.
+const modelURL = new URL('./media/head/tripo-head-web.glb', import.meta.url);
 const clamp = THREE.MathUtils.clamp;
 const portraits = [];
-const reduced = matchMedia('(prefers-reduced-motion: reduce)');
+const mobile = matchMedia('(max-width: 760px), (pointer: coarse)');
 const motionEnabled = () => document.documentElement.dataset.motion
-  ? document.documentElement.dataset.motion !== 'off' : !reduced.matches;
+  ? document.documentElement.dataset.motion !== 'off' : true;
 const loader = new GLTFLoader().setMeshoptDecoder(MeshoptDecoder);
 const modelPromise = loader.loadAsync(modelURL.href);
 
@@ -114,7 +114,7 @@ class ModelPortrait {
     this.renderer = new THREE.WebGLRenderer({canvas, alpha:true, antialias:true,
       powerPreference:'low-power', preserveDrawingBuffer:this.orbit});
     this.renderer.setClearColor(0x000000, 0);
-    this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, 1.5));
+    this.renderer.setPixelRatio(Math.min(devicePixelRatio || 1, mobile.matches ? 1.25 : 1.5));
     this.renderer.outputColorSpace = THREE.SRGBColorSpace;
     this.renderer.toneMapping = THREE.ACESFilmicToneMapping;
     this.renderer.toneMappingExposure = 1;
@@ -147,7 +147,7 @@ class ModelPortrait {
       triangles += (geometry.index ? geometry.index.count : geometry.attributes.position.count)/3;
       object.frustumCulled = true;
     });
-    canvas.dataset.modelSource = 'tripo-head.glb';
+    canvas.dataset.modelSource = 'tripo-head-web.glb';
     canvas.dataset.triangles = triangles;
     this.tick = this.tick.bind(this);
     this.resizeObserver = new ResizeObserver(()=>this.resize());
@@ -255,10 +255,11 @@ class ModelPortrait {
   tick(now) {
     this.frame=0;
     if (document.hidden || !this.visible || !this.enabled()) return;
-    const fps=matchMedia('(pointer:coarse)').matches?18:24;
-    if (now-this.lastTime>=1000/fps) {
+    const interval=1000/30;
+    const elapsed=now-this.lastTime;
+    if (elapsed>=interval-.5) {
       const dt=Math.min(.1,(now-this.lastTime)/1000);
-      this.lastTime=now;
+      this.lastTime=now-Math.max(0,elapsed%interval);
       this.draw((now-this.startTime)/1000,dt);
     }
     this.frame=requestAnimationFrame(this.tick);

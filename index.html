@@ -1,22 +1,24 @@
 <!doctype html>
-<html lang="ru">
+<html lang="ru" data-motion="on">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
   <meta name="description" content="Danil Shubin, Full stack дизайнер. Карточки товаров для маркетплейсов.">
   <title>Danil Shubin | Full stack дизайнер</title>
-  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
+  <link rel="icon" href="favicon-32.png?v=2" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="apple-touch-icon.png">
   <link rel="stylesheet" href="vendor/display-fonts.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="hero.css">
-  <link rel="stylesheet" href="orbit.css">
+  <link rel="stylesheet" href="styles.css?v=2">
+  <link rel="stylesheet" href="hero.css?v=2">
+  <link rel="stylesheet" href="orbit.css?v=2">
   <link rel="stylesheet" href="head.css">
   <script src="vendor/motion.js" defer></script>
-  <script src="app.js" defer></script>
-  <script src="orbit.js" defer></script>
+  <script src="app.js?v=2" defer></script>
+  <script src="orbit.js?v=2" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
-  <script src="portrait-model.js" type="module"></script>
+  <script src="portrait-model.js?v=2" type="module"></script>
   <script src="assistant.js" defer></script>
 </head>
 <body class="portfolio-page">
@@ -24,7 +26,7 @@
   <header class="header shell">
     <a class="identity" href="./" aria-label="DANIL SHUBIN, главная"><img class="identity-logo" src="media/ds-logo.png" alt="Danil Shubin" width="242" height="106"></a>
     <nav aria-label="Основная навигация"><a href="#cards">Карточки</a></nav>
-    <button type="button" class="motion-toggle" aria-label="Включить анимацию" aria-pressed="false"><span class="motion-label">Анимация</span><span class="toggle-track" aria-hidden="true"><span></span></span></button>
+    <button type="button" class="motion-toggle" aria-label="Выключить анимацию" aria-pressed="true"><span class="motion-label">Анимация</span><span class="toggle-track" aria-hidden="true"><span></span></span></button>
   </header>
   <main id="main">
     <section class="hero-sequence" aria-labelledby="hero-title">
@@ -61,7 +63,6 @@
               <button type="button" class="orbit-icon" data-orbit-icon="photoshop" aria-label="Переместить Photoshop" style="--orbit-glow:#35bcff"><img src="media/orbit/photoshop.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Photoshop</span></button>
               <button type="button" class="orbit-icon" data-orbit-icon="blender" aria-label="Переместить Blender" style="--orbit-glow:#ff9526"><img src="media/orbit/blender.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">Blender</span></button>
               <button type="button" class="orbit-icon" data-orbit-icon="after-effects" aria-label="Переместить After Effects" style="--orbit-glow:#a595ff"><img src="media/orbit/after-effects.webp" alt="" width="512" height="512" draggable="false"><span class="orbit-label" aria-hidden="true">After Effects</span></button>
-              <p class="orbit-hint" aria-hidden="true">Перетащи и отпусти</p>
               <p class="orbit-help" id="orbit-help">Иконки можно перетаскивать в пределах первого экрана. С клавиатуры используйте стрелки. Enter или Escape возвращает иконку на орбиту.</p>
               <p class="orbit-help orbit-status" role="status" aria-live="polite" aria-atomic="true"></p>
             </div>

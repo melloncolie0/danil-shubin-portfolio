@@ -29,4 +29,5 @@ html[data-motion="off"] .hero{position:relative}
 html[data-motion="off"] .hero-composition,html[data-motion="off"] .headline-line,html[data-motion="off"] .skill-face{will-change:auto}
 html[data-motion="off"] .card-button:hover .card-surface:after{opacity:0}
 @media(hover:none),(pointer:coarse){.card-button:hover .card-surface:after{opacity:0}}
+@media(hover:none),(pointer:coarse){.hero-sequence{height:auto;min-height:0}.hero{position:relative}.hero-composition,.skill-face{will-change:auto}}
 @media(prefers-reduced-motion:reduce){html:not([data-motion="on"]) .hero-sequence{height:auto;min-height:0}html:not([data-motion="on"]) .hero{position:relative}html:not([data-motion="on"]) .hero-composition,html:not([data-motion="on"]) .headline-line,html:not([data-motion="on"]) .skill-face{will-change:auto}}
