@@ -337,13 +337,14 @@ async function initGallery() {
     document.dispatchEvent(new CustomEvent('portfolio-card-open', { detail: activeCards[selectedIndex] }));
   }
 
-  function openCard(id, origin) {
+  function openCard(id, origin, pointer = false) {
     const isGallery = origin.closest('.card-grid');
     activeCards = isGallery ? currentCards() : cards;
     selectedIndex = activeCards.findIndex((card) => card.id === id);
     if (selectedIndex < 0) return;
     lastFocus = origin;
     displayCard();
+    dialog.dataset.pointerFocus = String(pointer);
     dialog.showModal();
     announceCard();
     document.body.classList.add('modal-open');
@@ -358,13 +359,14 @@ async function initGallery() {
 
   document.addEventListener('click', (event) => {
     const button = event.target.closest('button[data-card-id]');
-    if (button) openCard(button.dataset.cardId, button);
+    if (button) openCard(button.dataset.cardId, button, event.detail !== 0 || event.pointerType === 'touch');
   });
   document.getElementById('previous-card').addEventListener('click', () => nextCard(-1));
   document.getElementById('next-card').addEventListener('click', () => nextCard(1));
   document.querySelector('.close-lightbox').addEventListener('click', () => dialog.close());
   dialog.addEventListener('click', (event) => { if (event.target === dialog) dialog.close(); });
   dialog.addEventListener('keydown', (event) => {
+    dialog.dataset.pointerFocus = 'false';
     if (event.key === 'ArrowRight') { event.preventDefault(); nextCard(1); }
     if (event.key === 'ArrowLeft') { event.preventDefault(); nextCard(-1); }
   });

@@ -97,6 +97,13 @@ class ModelPortrait {
     this.frontYaw = -Math.PI/2;
     this.orbitYaw = this.orbitPitch = 0;
     this.orbit = canvas.hasAttribute('data-orbit');
+    this.avatar = canvas.closest('.assistant-avatar');
+    this.entryElapsed = 0;
+    this.entryFinished = !this.avatar || this.orbit || !motionEnabled() || this.avatar.dataset.entry==='fallback';
+    this.entryFollowAt = -Infinity;
+    this.entryNotify = false;
+    canvas.dataset.entry = this.entryFinished ? 'settled' : 'playing';
+    if (this.avatar) this.avatar.dataset.entry = canvas.dataset.entry;
     this.hovering = false;
     this.nodStart = -10;
     this.renderCount = 0;
@@ -106,7 +113,7 @@ class ModelPortrait {
     this.gazeOverride = null;
     this.eyesClosed = false;
     this.blinkStart = -10;
-    this.nextBlink = 1.8 + Math.random();
+    this.nextBlink = this.entryFinished ? 1.8 + Math.random() : Infinity;
     this.blinkCount = 0;
     this.lastPointer = -10;
     this.faceUniforms = {blink:{value:0}, gaze:{value:new THREE.Vector2()}, mouth:{value:0}};
@@ -167,6 +174,8 @@ class ModelPortrait {
     });
     this.resize();
     canvas.dataset.ready = 'true';
+    if (this.avatar) document.documentElement.removeAttribute('data-portrait-entry');
+    this.lastTime = performance.now();
     this.resume();
   }
   enabled() { return motionEnabled(); }
@@ -211,7 +220,7 @@ class ModelPortrait {
     this.blinkCount++;
     if (wake) this.resume();
   }
-  updateEyes(time, moving, blend) {
+  updateEyes(time, moving, blend, tracking=true) {
     if (moving && time >= this.nextBlink) this.blink(false);
     const phase=time-this.blinkStart;
     let blink=0;
@@ -223,8 +232,8 @@ class ModelPortrait {
     if (moving && this.eyesClosed) blink=1;
     const idle=time-this.lastPointer>3;
     const glance=idle?Math.sin(time*0.83)*0.24:0;
-    const x=moving?(this.gazeOverride?.x ?? (this.targetX*0.82+glance)):0;
-    const y=moving?(this.gazeOverride?.y ?? (-this.targetY*0.72+Math.sin(time*0.51)*0.08)):0;
+    const x=moving&&tracking?(this.gazeOverride?.x ?? (this.targetX*0.82+glance)):0;
+    const y=moving&&tracking?(this.gazeOverride?.y ?? (-this.targetY*0.72+Math.sin(time*0.51)*0.08)):0;
     this.eyeX+=(clamp(x,-1,1)-this.eyeX)*blend;
     this.eyeY+=(clamp(y,-1,1)-this.eyeY)*blend;
     if (!moving) this.eyeX=this.eyeY=0;
@@ -264,10 +273,33 @@ class ModelPortrait {
     }
     this.frame=requestAnimationFrame(this.tick);
   }
+  updateEntrance(time,dt,moving) {
+    if (this.entryFinished) return 0;
+    // Advance only rendered time so loading or a hidden tab cannot skip the arrival.
+    if (moving) this.entryElapsed+=dt;
+    const progress=moving?clamp((this.entryElapsed-.12)/1.12,0,1):1;
+    const eased=1-Math.pow(1-progress,3);
+    const fade=clamp(progress/.62,0,1);
+    this.avatar.style.setProperty('--portrait-opacity',String(fade*fade*(3-2*fade)));
+    this.avatar.style.setProperty('--portrait-rise',`${36*(1-eased)}px`);
+    this.avatar.style.setProperty('--portrait-scale',String(1-.035*(1-eased)));
+    this.canvas.dataset.entryProgress=progress.toFixed(3);
+    if (progress===1) {
+      this.entryFinished=true;
+      this.entryFollowAt=moving?time+.30:time;
+      this.avatar.dataset.entry=this.canvas.dataset.entry='settled';
+      ['--portrait-opacity','--portrait-rise','--portrait-scale'].forEach(name=>this.avatar.style.removeProperty(name));
+      if (moving) this.blink(false);
+      this.entryNotify=true;
+    }
+    return 1-eased;
+  }
   draw(time,dt=.04) {
     const moving=this.enabled() && this.visible;
-    const desiredYaw=this.orbit?this.orbitYaw:(moving?this.targetX*.24+Math.sin(time*.65)*.016:0);
-    const desiredPitch=this.orbit?this.orbitPitch:(moving?this.targetY*.12:0);
+    const arrival=this.updateEntrance(time,dt,moving);
+    const tracking=moving&&this.entryFinished&&time>=this.entryFollowAt;
+    const desiredYaw=this.orbit?this.orbitYaw:(tracking?this.targetX*.24+Math.sin(time*.65)*.016:0);
+    const desiredPitch=this.orbit?this.orbitPitch:(tracking?this.targetY*.12:0);
     const blend=1-Math.exp(-Math.max(dt,.016)*9);
     this.yaw+=(desiredYaw-this.yaw)*blend;
     this.pitch+=(desiredPitch-this.pitch)*blend;
@@ -276,11 +308,11 @@ class ModelPortrait {
     const pulse=moving?Math.sin(progress*Math.PI):0;
     const nod=moving?Math.sin(progress*Math.PI*2)*pulse*.16:0;
     const pop=1+(moving && this.hovering ? .025 : 0)+pulse*.025;
-    this.root.rotation.set(this.pitch+nod,this.frontYaw+this.yaw,0);
+    this.root.rotation.set(this.pitch+nod+.06*arrival,this.frontYaw+this.yaw-.38*arrival,.025*arrival);
     this.root.position.y=moving && !this.orbit?Math.sin(time*.95)*.009:0;
     this.root.scale.setScalar(this.baseScale*pop);
-    this.updateEyes(time,moving,blend);
-    this.updateMouth(time,moving,dt);
+    this.updateEyes(time,moving,blend,tracking);
+    this.updateMouth(time,moving&&tracking,dt);
     this.renderer.render(this.scene,this.camera);
     this.renderCount++;
     this.canvas.dataset.frames=this.renderCount;
@@ -288,6 +320,10 @@ class ModelPortrait {
     this.canvas.dataset.pitch=(this.pitch+nod).toFixed(3);
     this.canvas.dataset.motion=moving?'on':'off';
     this.canvas.dataset.nod=pulse.toFixed(3);
+    if (this.entryNotify) {
+      this.entryNotify=false;
+      this.canvas.dispatchEvent(new Event('portrait-entered'));
+    }
   }
 }
 
@@ -302,6 +338,8 @@ async function initialize() {
     } catch(error) {
       console.warn('Model portrait unavailable',error);
       canvas.dataset.ready='false';
+      canvas.dataset.entry='fallback';
+      if (canvas.closest('.assistant-avatar')) revealFallback();
     }
   }
 }
@@ -317,7 +355,17 @@ document.addEventListener('pointermove',event=> {
 document.documentElement.addEventListener('pointerleave',()=>portraits.forEach(p=>{p.targetX=p.targetY=0;}));
 document.addEventListener('visibilitychange',()=>portraits.forEach(p=>document.hidden?p.stop():p.resume()));
 document.addEventListener('motion-preference-change',()=>portraits.forEach(p=>{p.stop();p.nodStart=-10;p.blinkStart=-10;p.nextBlink=(performance.now()-p.startTime)/1000+1.8;p.resume();}));
+function revealFallback() {
+  document.documentElement.removeAttribute('data-portrait-entry');
+  document.querySelectorAll('.assistant-avatar').forEach(avatar=> {
+    avatar.dataset.entry='fallback';
+    avatar.querySelector('canvas').dataset.entry='fallback';
+    ['--portrait-opacity','--portrait-rise','--portrait-scale'].forEach(name=>avatar.style.removeProperty(name));
+  });
+  document.dispatchEvent(new Event('portrait-entry-fallback'));
+}
 initialize().catch(error=> {
   console.warn('Supplied model unavailable',error);
   document.querySelectorAll('[data-portrait]').forEach(c=>c.dataset.ready='false');
+  revealFallback();
 });

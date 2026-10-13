@@ -4,35 +4,51 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#000000">
-  <meta name="description" content="Danil Shubin, Full stack дизайнер. Сайты и карточки товаров для маркетплейсов.">
+  <meta name="description" content="Danil Shubin, Full stack дизайнер. Сайты, карточки товаров и интерактивные эксперименты.">
   <title>Danil Shubin | Full stack дизайнер</title>
   <script>
+    if (['#misc', '#particle-text', '#kinetic', '#metal-cloth', '#glass-lens', '#scene-portal'].includes(location.hash)) {
+      location.replace(new URL('sandbox.html' + location.hash, location.href).href);
+    }
     // Prepare the entrance before the first paint; failed scripts must not hide the title.
     try {
       if (sessionStorage.getItem('portfolio-motion-v2') !== 'off') document.documentElement.dataset.heroEntry = 'pending';
     } catch { document.documentElement.dataset.heroEntry = 'pending'; }
     setTimeout(() => document.documentElement.removeAttribute('data-hero-entry'), 4000);
+    document.documentElement.dataset.portraitEntry = 'pending';
+    setTimeout(() => {
+      if (document.documentElement.dataset.portraitEntry !== 'pending') return;
+      document.querySelectorAll('.assistant-avatar').forEach(avatar => {
+        avatar.dataset.entry = 'fallback';
+        avatar.querySelector('canvas').dataset.entry = 'fallback';
+      });
+      document.documentElement.removeAttribute('data-portrait-entry');
+      document.dispatchEvent(new Event('portrait-entry-fallback'));
+    }, 8000);
   </script>
   <link rel="icon" href="favicon.svg?v=2" type="image/svg+xml">
   <link rel="icon" href="favicon-32.png?v=2" sizes="32x32" type="image/png">
   <link rel="apple-touch-icon" href="apple-touch-icon.png">
-  <link rel="stylesheet" href="vendor/display-fonts.css">
-  <link rel="stylesheet" href="styles.css?v=5">
+  <link rel="preload" href="vendor/benzin-regular.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="vendor/benzin-medium.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="vendor/benzin-extrabold.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="stylesheet" href="vendor/display-fonts.css?v=2">
+  <link rel="stylesheet" href="styles.css?v=8">
   <link rel="stylesheet" href="hero.css?v=5">
   <link rel="stylesheet" href="orbit.css?v=6">
-  <link rel="stylesheet" href="head.css">
+  <link rel="stylesheet" href="head.css?v=4">
   <script src="vendor/motion.js" defer></script>
-  <script src="app.js?v=4" defer></script>
+  <script src="app.js?v=7" defer></script>
   <script src="orbit.js?v=6" defer></script>
-  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.js"}}</script>
-  <script src="portrait-model.js?v=2" type="module"></script>
-  <script src="assistant.js?v=4" defer></script>
+  <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
+  <script src="portrait-model.js?v=3" type="module"></script>
+  <script src="assistant.js?v=21" defer></script>
 </head>
 <body class="portfolio-page">
   <a class="skip-link" href="#main">К работам</a>
   <header class="header shell">
     <a class="identity" href="./" aria-label="DANIL SHUBIN, главная"><img class="identity-logo" src="media/ds-logo.png" alt="Danil Shubin" width="242" height="106"></a>
-    <nav aria-label="Основная навигация"><a href="#websites">Сайты</a><a href="#cards">Карточки</a></nav>
+    <nav aria-label="Основная навигация"><a href="#websites">Сайты</a><a href="#cards">Карточки</a><a href="sandbox.html">Песочница</a></nav>
     <button type="button" class="motion-toggle" aria-label="Выключить анимацию" aria-pressed="true"><span class="motion-label">Анимация</span><span class="toggle-track" aria-hidden="true"><span></span></span></button>
   </header>
   <main id="main">
@@ -83,7 +99,7 @@
       <div class="section-heading"><h2 id="websites-title">Сайты</h2></div>
       <div class="website-grid">
         <a class="website-work" href="sites/host/" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Константина Цыганкова в новой вкладке">
-          <div class="website-canvas"><div class="website-arrangement"><img class="website-shot" src="media/host-desktop.jpg?v=4" alt="Сайт ведущего Константина Цыганкова" width="1250" height="712" loading="lazy" decoding="async"></div></div>
+          <div class="website-canvas"><div class="website-arrangement"><img class="website-shot" src="media/host-desktop.jpg?v=5" alt="Сайт ведущего Константина Цыганкова" width="1265" height="712" loading="lazy" decoding="async"></div></div>
           <div class="work-caption"><h3>Константин Цыганков</h3><p>Ведущий мероприятий</p></div>
         </a>
         <a class="website-work" href="sites/massiv/" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Массив в новой вкладке">
@@ -99,7 +115,7 @@
           <div class="work-caption"><h3>Meow studio</h3><p>Перманентный макияж</p></div>
         </a>
         <a class="website-work" href="sites/skorohod/" target="_blank" rel="noopener noreferrer" aria-label="Открыть сайт Скороход в новой вкладке">
-          <div class="website-canvas"><div class="website-arrangement"><img class="website-shot" src="media/skorohod-desktop.jpg?v=2" alt="Сайт магазина женской обуви Скороход" width="1250" height="712" loading="lazy" decoding="async"></div></div>
+          <div class="website-canvas"><div class="website-arrangement"><img class="website-shot" src="media/skorohod-desktop.jpg?v=4" alt="Сайт магазина женской обуви Скороход" width="1265" height="709" loading="lazy" decoding="async"></div></div>
           <div class="work-caption"><h3>Скороход</h3><p>Магазин женской обуви</p></div>
         </a>
       </div>
@@ -122,6 +138,7 @@
       <div class="gallery-more"><button class="pill secondary tactile" id="show-all" type="button">Все работы</button></div>
       <noscript><p>Для переключения категорий включите JavaScript. <a href="media/card-12-large.webp">Посмотреть одну из работ</a>.</p></noscript>
     </section>
+
     </div>
   </main>
   <footer class="footer shell">
@@ -132,7 +149,7 @@
 
   <dialog class="lightbox" id="lightbox" aria-labelledby="lightbox-title">
     <div class="lightbox-shell">
-      <div class="lightbox-top"><div><p id="lightbox-category"></p><h2 id="lightbox-title"></h2></div><button type="button" class="round-button close-lightbox" aria-label="Закрыть просмотр"><span aria-hidden="true">×</span></button></div>
+      <div class="lightbox-top"><div><p id="lightbox-category"></p><h2 id="lightbox-title"></h2></div><button type="button" class="round-button close-lightbox" aria-label="Закрыть просмотр"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true" focusable="false"><path d="M6 6L18 18M18 6L6 18"/></svg></button></div>
       <div class="lightbox-content">
         <div class="lightbox-image-area"><img id="lightbox-image" src="media/card-12-large.webp" alt=""></div>
         <div class="lightbox-assistant-slot"></div>
@@ -145,9 +162,11 @@
       <button type="button" class="assistant-close" aria-label="Закрыть подсказку">×</button>
       <p class="assistant-text" aria-hidden="true"></p>
       <p class="assistant-live" role="status" aria-live="polite" aria-atomic="true"></p>
-      <div class="assistant-choices" hidden><button type="button" data-assistant-topic="websites">Сайты</button><button type="button" data-assistant-topic="cards">Карточки</button><button type="button" data-assistant-topic="help">Как смотреть</button></div>
+      <div class="assistant-choices" hidden><button type="button" data-assistant-topic="websites">Сайты</button><button type="button" data-assistant-topic="cards">Карточки</button><a href="sandbox.html">Песочница</a><button type="button" data-assistant-topic="help">Как смотреть</button></div>
+      <a class="assistant-contact" href="https://t.me/melloncolie2" target="_blank" rel="noopener noreferrer" hidden>Написать в Telegram</a>
     </div>
     <button type="button" class="assistant-avatar" aria-label="Открыть помощника" aria-expanded="false" aria-controls="assistant-bubble"><img src="media/head/tripo-poster.jpg" alt="" aria-hidden="true"><canvas data-portrait aria-hidden="true"></canvas></button>
+    <button type="button" class="assistant-mute" aria-label="Выключить реплики помощника">Помолчи</button>
   </aside>
 </body>
 </html>

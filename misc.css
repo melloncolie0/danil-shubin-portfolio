@@ -1,0 +1,71 @@
+.misc-section{padding-top:100px}
+.misc-heading{display:flex;align-items:flex-end;justify-content:space-between;gap:30px;margin-bottom:55px}
+.misc-heading>p{font-size:12px;line-height:1.8;color:var(--muted);margin:0 0 6px}
+.sandbox-page .misc-section{padding-top:clamp(38px,5vw,88px)}
+.sandbox-page .misc-heading h1{font-family:var(--display);font-size:clamp(42px,5.7vw,86px);line-height:1.07;letter-spacing:-.055em;font-weight:400;margin:0}
+.sandbox-page .header nav [aria-current="page"]:after{transform:scaleX(1)}
+.sandbox-effect{position:relative;isolation:isolate;height:clamp(570px,70svh,760px);background:#000}
+.sandbox-effect+.sandbox-effect{margin-top:clamp(100px,12vw,190px)}
+.sandbox-effect[data-effect="particles"]{height:clamp(620px,78svh,880px)}
+.sandbox-effect[data-effect="cloth"]{height:clamp(680px,82svh,900px)}
+.sandbox-effect[data-effect="lens"]{height:clamp(620px,78svh,840px)}
+.sandbox-effect[data-effect="backrooms"]{--portal-bleed:clamp(140px,20svh,190px);height:clamp(640px,80svh,860px);overflow:visible;margin-bottom:var(--portal-bleed)}
+.sandbox-effect+.portal-effect{margin-top:max(clamp(100px,12vw,190px),var(--portal-bleed))}
+.sandbox-canvas.portal-canvas{inset:calc(0px - var(--portal-bleed)) 0;height:calc(100% + var(--portal-bleed) + var(--portal-bleed));cursor:default;opacity:0;transition:opacity .9s}
+.portal-effect[data-reveal="1.000"] .portal-canvas{mask-image:linear-gradient(to bottom,transparent,#000 3%,#000 97%,transparent)}
+.portal-canvas[data-hover="edge"]{cursor:grab}
+.portal-canvas[data-hover="inside"]{cursor:grab}
+.portal-effect[data-ready="true"] .portal-canvas{opacity:1}
+.portal-status{position:absolute;inset:0;display:grid;place-items:center;margin:0;font-size:11px;color:var(--muted);pointer-events:none}
+.portal-status[hidden],.sandbox-actions .portal-close[hidden]{display:none}
+.portal-joystick{display:none;position:absolute;left:clamp(24px,4vw,60px);bottom:86px;z-index:3;width:96px;height:96px;padding:0;border:1px solid #ffffff35;border-radius:50%;background:#0006;touch-action:none;-webkit-tap-highlight-color:transparent;user-select:none}
+.portal-joystick svg{width:100%;height:100%;fill:none;stroke:#ffffff70;stroke-width:1.5;pointer-events:none}
+.portal-joystick span{position:absolute;left:32px;top:32px;width:30px;height:30px;background:#ffffff22;border:1px solid #ffffff65;border-radius:50%;pointer-events:none;will-change:transform}
+.portal-joystick:focus-visible{outline:1px solid #ffffff70;outline-offset:4px}
+.portal-joystick[hidden]{display:none!important}
+html[data-motion="off"] .portal-canvas{transition:none}
+.sandbox-canvas.lens-canvas{cursor:none;opacity:0;transition:opacity .7s}
+.lens-effect[data-ready="true"] .lens-canvas{opacity:1}
+.lens-word{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.28em;margin:0;font-size:clamp(45px,10.5vw,184px);font-weight:400;line-height:1.1;pointer-events:none}
+.lens-effect[data-ready="true"] .lens-word{visibility:hidden}
+.lens-status{position:absolute;bottom:80px;left:0;right:0;text-align:center;color:var(--muted);font-size:11px;pointer-events:none}
+html[data-motion="off"] .lens-canvas{transition:none}
+.cloth-canvas{cursor:default;opacity:0;transition:opacity .9s}
+.cloth-effect[data-ready="true"] .cloth-canvas{opacity:1}
+.cloth-canvas[data-hover="true"]{cursor:grab}
+.cloth-fallback{position:absolute;inset:0;display:grid;place-items:center;margin:0;font-size:11px;color:var(--muted);pointer-events:none}
+.cloth-fallback[hidden]{display:none}
+html[data-motion="off"] .cloth-canvas{transition:none}
+.sandbox-canvas{position:absolute;inset:0;display:block;width:100%;height:100%;touch-action:pan-y;cursor:crosshair;outline:none;-webkit-tap-highlight-color:transparent}
+.sandbox-canvas:focus-visible{outline:1px solid #ffffff30;outline-offset:-12px}
+.sandbox-canvas[data-dragging="true"]{cursor:grabbing}
+.sandbox-word{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.13em;margin:0;transform:translateY(20px);font-weight:500;font-size:clamp(60px,12vw,215px);line-height:1;pointer-events:none}
+.sandbox-effect[data-ready="true"] .sandbox-word{visibility:hidden}
+.sandbox-actions{position:absolute;left:0;right:0;bottom:25px;z-index:2;display:flex;gap:10px;pointer-events:none}
+.sandbox-actions button{min-height:44px;padding:12px 18px;border:1px solid #ffffff35;border-radius:28px;background:#0009;color:var(--ink);font:inherit;font-size:10px;line-height:1.4;white-space:nowrap;pointer-events:auto;transition:border-color .25s,background .25s}
+.sandbox-actions button:hover{border-color:#ffffff80;background:#171719}
+.sandbox-actions button:disabled{opacity:.4;cursor:default}
+.sandbox-actions button:focus-visible{outline:2px solid var(--blue);outline-offset:4px}
+.sandbox-touch{display:none}
+.sandbox-touch[aria-pressed="true"]{background:var(--ink)!important;color:#121212;border-color:var(--ink)}
+.sandbox-effect[data-touch-playing="true"] .sandbox-canvas{touch-action:none}
+@media(pointer:coarse){.sandbox-touch{display:block}.portal-joystick{display:block}.sandbox-canvas{cursor:default}.sandbox-canvas.lens-canvas{cursor:default}}
+@media(max-width:760px){
+ .misc-section{padding-top:65px}
+ .sandbox-page .misc-heading h1{font-size:clamp(27px,8vw,42px)}
+ .misc-heading{display:block;margin-bottom:35px}
+ .misc-heading>p{margin:18px 0 0;font-size:10px;max-width:none}
+ .sandbox-effect{height:clamp(450px,62svh,620px)}
+ .sandbox-effect[data-effect="particles"]{height:clamp(480px,68svh,680px)}
+ .sandbox-effect[data-effect="cloth"]{height:clamp(530px,72svh,740px)}
+ .sandbox-effect[data-effect="lens"]{height:clamp(500px,68svh,680px)}
+ .sandbox-effect[data-effect="backrooms"]{--portal-bleed:clamp(120px,20svh,180px);height:clamp(530px,72svh,720px)}
+ .lens-word{font-size:clamp(40px,12vw,80px)}
+ .sandbox-effect+.sandbox-effect{margin-top:110px}
+ .sandbox-effect+.portal-effect{margin-top:max(110px,var(--portal-bleed))}
+ .sandbox-word{font-size:clamp(56px,14vw,100px);transform:translateY(20px)}
+ .sandbox-actions{bottom:20px;padding-right:125px;gap:8px}
+ .sandbox-actions button{padding:12px 15px;font-size:9px}
+ .sandbox-touch{display:block}
+ .portal-joystick{display:block;left:20px}
+}
