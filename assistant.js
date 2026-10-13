@@ -15,11 +15,11 @@
   const home=host.parentElement;
   const sandboxPage=document.body?.dataset.page==='sandbox';
   let timer=0, arrivalTimer=0, contextTimer=0, contextFrame=0, token=0;
-  let currentText='', cardText='', currentContext='', introduced=false, showChoices=true, showContact=false;
+  let currentText='', cardText='', currentContext='', introduced=sandboxPage, showChoices=true, showContact=false;
   let pendingSpeech=null, muted=false;
   try { muted=localStorage.getItem('portfolio-assistant-muted')==='true'; } catch { /* The control also works without storage. */ }
   const greeting=sandboxPage
-    ? 'Привет, я Данил. Это моя песочница. Здесь интерактивные эффекты, которые можно добавить на сайт или в приложение.'
+    ? 'Это моя песочница. Здесь интерактивные эффекты, которые можно добавить на сайт или в приложение.'
     : 'Привет, я Данил. Здесь мои сайты и карточки. На отдельной странице «Песочница» собраны интерактивные эффекты, которые можно добавить на сайт или в приложение.';
   const messages={
     hero:greeting,
@@ -61,7 +61,7 @@
       muteButton.textContent=muted?'Говори':'Помолчи';
       muteButton.setAttribute('aria-label',muted?'Включить реплики помощника':'Выключить реплики помощника');
     }
-    avatar.setAttribute('aria-label',muted?'Помощник молчит. Реплики включаются кнопкой «Говори»':'Открыть помощника');
+    avatar.setAttribute('aria-label',muted?'Помощник молчит. Реплики включаются кнопкой «Говори»':sandboxPage?'Рассказать об этом эффекте':'Открыть помощника');
   }
   function stop() {
     clearTimeout(timer); token++;
@@ -124,7 +124,7 @@
     const next=detectContext();
     if(next===currentContext) return;
     close(); currentContext=next; host.dataset.section=next;
-    if(!next || muted) return;
+    if(!next || muted || sandboxPage) return;
     contextTimer=setTimeout(()=> {
       if(!muted && !document.hidden && !dialog?.open && detectContext()===next) sayContext(next);
     },600);
@@ -151,7 +151,7 @@
     muted=!muted;
     try { localStorage.setItem('portfolio-assistant-muted',String(muted)); } catch { /* Keep the current choice in this page. */ }
     close(); syncMute();
-    if(!muted) {
+    if(!muted && !sandboxPage) {
       currentContext=detectContext(); host.dataset.section=currentContext;
       cardText?say(cardText,false):sayContext(currentContext || 'hero');
     }
@@ -160,7 +160,7 @@
     if(muted) { muteButton?.focus(); return; }
     if(!bubble.hidden) { close(); return; }
     currentContext=detectContext(); host.dataset.section=currentContext;
-    cardText?say(cardText,false):sayContext(currentContext || 'hero');
+    cardText?say(cardText,false):sayContext(currentContext || (sandboxPage?'misc':'hero'));
   });
   host.addEventListener('keydown',event=> {
     if(event.key==='Escape' && !bubble.hidden && !dialog?.open) { close(); avatar.focus(); }
@@ -169,13 +169,13 @@
     const topic=button.dataset.assistantTopic;
     if(topic==='help') {
       say(sandboxPage
-        ? 'Двигай мышью или потяни эффект. На телефоне нажми «Попробовать» у эффекта, а в Backrooms просто коснись портала. Я подскажу управление, когда перейдёшь к следующему эффекту.'
+        ? 'Двигай мышью или потяни эффект. На телефоне нажми «Попробовать» у эффекта, а в Backrooms просто коснись портала. Нажми на мою голову, если нужна подсказка о текущем эффекте.'
         : 'Сайты открываются по нажатию на превью. Карточки можно рассмотреть крупнее. Эффекты находятся на отдельной странице «Песочница», ссылка есть в меню.'); return;
     }
     document.getElementById(topic)?.scrollIntoView({behavior:document.documentElement.dataset.motion==='off'?'auto':'smooth'});
     sayContext(topic);
   }));
-  for(const [key,element] of areas.filter(([key])=>['kinetic','particle','cloth','lens','portal'].includes(key))) {
+  for(const [key,element] of areas.filter(([key])=>!sandboxPage && ['kinetic','particle','cloth','lens','portal'].includes(key))) {
     const explain=()=> {
       if(muted || dialog?.open || currentContext===key && !bubble.hidden) return;
       close(); currentContext=key; host.dataset.section=key; sayContext(key);
