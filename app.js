@@ -150,7 +150,7 @@ function initHeroMotion() {
       return;
     }
     try {
-      const { playHeroStroke } = await import('./vendor/hero-stroke.js?v=1');
+      const { playHeroStroke } = await import('./vendor/hero-stroke.js?v=2');
       if (isMotionReduced() || !entrancePending || root.dataset.heroEntry !== 'pending') { finishEntrance(); return; }
       strokeEntrance = playHeroStroke({ lines, rows, onComplete: finishEntrance });
       root.dataset.heroEntry = 'drawing';
