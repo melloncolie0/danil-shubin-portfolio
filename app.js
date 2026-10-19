@@ -114,13 +114,15 @@ function initHeroMotion() {
   const composition = sequence.querySelector('.hero-composition');
   const lines = [...sequence.querySelectorAll('.headline-line')];
   const rows = [...sequence.querySelectorAll('.skill-row')];
-  const entranceElements = [...lines, ...rows];
   let stopScroll = null;
-  let entrances = [];
+  let strokeEntrance = null;
   let entrancePending = root.dataset.heroEntry === 'pending';
 
-  function clearEntrance() {
-    entranceElements.forEach((element) => { element.style.transform = ''; element.style.opacity = ''; });
+  function finishEntrance() {
+    entrancePending = false;
+    strokeEntrance?.finish();
+    root.removeAttribute('data-hero-entry');
+    rows.forEach(row => { row.style.transform = ''; row.style.opacity = ''; });
   }
 
   function renderScroll(progress) {
@@ -132,14 +134,8 @@ function initHeroMotion() {
   function configureMotion() {
     stopScroll?.();
     stopScroll = null;
-    entrances.forEach((animation) => animation?.stop());
-    entrances = [];
     renderScroll(0);
-    if (!entrancePending || isMotionReduced()) {
-      entrancePending = false;
-      root.removeAttribute('data-hero-entry');
-      clearEntrance();
-    }
+    if (isMotionReduced()) finishEntrance();
     if (isMotionReduced()) return;
     if (desktopScroll.matches) stopScroll = library.scroll(renderScroll, { target: sequence, offset: ['start start', 'end start'] });
   }
@@ -147,22 +143,20 @@ function initHeroMotion() {
   document.addEventListener('motion-preference-change', configureMotion);
   desktopScroll.addEventListener('change', configureMotion);
 
-  // Wait for the real font before revealing the composition.
-  document.fonts.ready.then(() => {
-    if (!entrancePending || isMotionReduced() || root.dataset.heroEntry !== 'pending') {
-      root.removeAttribute('data-hero-entry');
-      clearEntrance();
+  // Only load the entrance renderer for a visible Hero after Benzin is ready.
+  document.fonts.ready.then(async () => {
+    if (!entrancePending || isMotionReduced() || root.dataset.heroEntry !== 'pending' || sequence.getBoundingClientRect().bottom <= 0) {
+      finishEntrance();
       return;
     }
-    entrancePending = false;
-    lines.forEach((line, index) => {
-      entrances.push(animateElement(line, { y: [18, 0], opacity: [0, 1] }, { duration: 1.15, delay: 0.06 + index * 0.16, ease: [0.16, 1, 0.3, 1] }));
-    });
-    rows.forEach((row, index) => {
-      entrances.push(animateElement(row, { opacity: [0, 1], y: [8, 0] }, { duration: 0.85, delay: 0.38 + index * 0.065 }));
-    });
-    root.removeAttribute('data-hero-entry');
-    Promise.all(entrances.filter(Boolean)).then(clearEntrance);
+    try {
+      const { playHeroStroke } = await import('./vendor/hero-stroke.js?v=1');
+      if (isMotionReduced() || !entrancePending || root.dataset.heroEntry !== 'pending') { finishEntrance(); return; }
+      strokeEntrance = playHeroStroke({ lines, rows, onComplete: finishEntrance });
+      root.dataset.heroEntry = 'drawing';
+    } catch {
+      finishEntrance();
+    }
   });
   sequence.querySelectorAll('.hero-skill').forEach(attachSkillMotion);
 }

@@ -5,8 +5,11 @@
 .hero-composition{width:100%;max-width:1230px;transform-origin:left center;will-change:transform,opacity}
 .hero h1{font-family:var(--display);font-size:clamp(48px,9vw,146px);font-weight:800;line-height:1.06;letter-spacing:-.025em;margin:0}
 .headline-mask{display:block;overflow:hidden;padding-bottom:.12em;margin-bottom:-.12em}
-.headline-line{display:block;width:max-content;max-width:100%;white-space:nowrap;will-change:transform}
-html[data-hero-entry="pending"] .headline-line{opacity:0;transform:translate3d(0,18px,0)}
+.headline-line{display:block;position:relative;width:max-content;max-width:100%;white-space:nowrap}
+html[data-hero-entry="pending"] .headline-original,.headline-line.is-stroke-active .headline-original{opacity:0}
+.hero-stroke-mount{position:absolute;inset:0;pointer-events:none}
+.hero-stroke-mount .stroke-text,.hero-stroke-mount .stroke-text__svg{width:100%;height:100%;max-width:none;margin:0}
+.hero-stroke-mount .stroke-text__svg{overflow:visible}
 html[data-hero-entry="pending"] .skill-row{opacity:0;transform:translate3d(0,8px,0)}
 .designer-line{font-weight:400;letter-spacing:-.05em;line-height:1.05}
 .hero-skills{margin-top:24px;font-size:clamp(18px,1.75vw,29px);line-height:1.55;font-weight:400;letter-spacing:-.035em}
