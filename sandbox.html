@@ -26,16 +26,17 @@
   <link rel="stylesheet" href="vendor/display-fonts.css?v=2">
   <link rel="stylesheet" href="styles.css?v=8">
   <link rel="stylesheet" href="head.css?v=4">
-  <link rel="stylesheet" href="misc.css?v=22">
+  <link rel="stylesheet" href="misc.css?v=23">
+  <link rel="stylesheet" href="vendor/fluid-glass.css?v=1">
   <script src="sandbox-scene.js?v=7" defer></script>
   <script src="vendor/motion.js" defer></script>
   <script src="app.js?v=7" defer></script>
   <script type="importmap">{"imports":{"three":"./vendor/three/build/three.module.min.js"}}</script>
   <script src="portrait-model.js?v=3" type="module"></script>
   <script src="cloth-effect.js?v=4" type="module"></script>
-  <script src="lens-effect.js?v=5" type="module"></script>
+  <script src="fluid-glass-effect.js?v=1" type="module"></script>
   <script src="backrooms-effect.js?v=5" type="module"></script>
-  <script src="assistant.js?v=22" defer></script>
+  <script src="assistant.js?v=23" defer></script>
 </head>
 <body class="portfolio-page sandbox-page" data-page="sandbox">
   <a class="skip-link" href="#main">К эффектам</a>
@@ -69,7 +70,7 @@
       <div class="sandbox-effect lens-effect" id="glass-lens" data-effect="lens">
         <p class="lens-word" aria-hidden="true"><span>СМОТРИ</span><span>ГЛУБЖЕ</span></p>
         <p class="lens-status" hidden></p>
-        <canvas class="sandbox-canvas lens-canvas" tabindex="0" aria-label="Стеклянная линза над надписью «СМОТРИ ГЛУБЖЕ». Двигайте мышкой или перетаскивайте линзу, чтобы увеличивать и преломлять буквы. Стрелки двигают линзу, Escape возвращает её в центр. На телефоне нажмите «Попробовать», чтобы двигать линзу пальцем."></canvas>
+        <div class="lens-mount" tabindex="0" role="group" aria-label="Жидкое стекло над надписью «СМОТРИ ГЛУБЖЕ». Двигайте курсором, чтобы преломлять буквы. Нажмите на стекло, чтобы изменить его форму. Стрелки двигают стекло, Enter меняет форму, Escape возвращает его на место. На телефоне нажмите «Попробовать», чтобы двигать стекло пальцем."></div>
         <div class="sandbox-actions shell"><button class="sandbox-touch" type="button" aria-pressed="false">Попробовать</button></div>
       </div>
       <div class="sandbox-effect portal-effect" id="scene-portal" data-effect="backrooms">

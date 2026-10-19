@@ -28,6 +28,12 @@ html[data-motion="off"] .portal-canvas{transition:none}
 .lens-effect[data-ready="true"] .lens-canvas{opacity:1}
 .lens-word{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.28em;margin:0;font-size:clamp(45px,10.5vw,184px);font-weight:400;line-height:1.1;pointer-events:none}
 .lens-effect[data-ready="true"] .lens-word{visibility:hidden}
+.lens-mount{position:absolute;inset:0;touch-action:pan-y;outline:none;cursor:none;-webkit-tap-highlight-color:transparent;opacity:0;transition:opacity .7s}
+.lens-effect[data-ready="true"] .lens-mount{opacity:1}
+.lens-mount:focus-visible{outline:1px solid #ffffff30;outline-offset:-12px}
+.lens-mount .fluid-glass__canvas{touch-action:pan-y}
+.lens-effect[data-touch-playing="true"] .lens-mount,.lens-effect[data-touch-playing="true"] .fluid-glass__canvas{touch-action:none}
+html[data-motion="off"] .lens-mount{transition:none}
 .lens-status{position:absolute;bottom:80px;left:0;right:0;text-align:center;color:var(--muted);font-size:11px;pointer-events:none}
 html[data-motion="off"] .lens-canvas{transition:none}
 .cloth-canvas{cursor:default;opacity:0;transition:opacity .9s}
@@ -51,6 +57,7 @@ html[data-motion="off"] .cloth-canvas{transition:none}
 .sandbox-effect[data-touch-playing="true"] .sandbox-canvas{touch-action:none}
 @media(pointer:coarse){.sandbox-touch{display:block}.portal-joystick{display:block}.sandbox-canvas{cursor:default}.sandbox-canvas.lens-canvas{cursor:default}}
 @media(max-width:760px){
+ .lens-mount{cursor:default}
  .misc-section{padding-top:65px}
  .sandbox-page .misc-heading h1{font-size:clamp(27px,8vw,42px)}
  .misc-heading{display:block;margin-bottom:35px}
