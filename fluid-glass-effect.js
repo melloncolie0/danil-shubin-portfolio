@@ -7,7 +7,7 @@ if (host) {
     loading = true; observer.disconnect();
     try {
       const [module] = await Promise.all([
-        import('./vendor/fluid-glass.js?v=1'),
+        import('./vendor/fluid-glass.js?v=2'),
         document.fonts.load('400 160px Benzin').catch(() => {})
       ]);
       module.mountFluidGlass(host);
